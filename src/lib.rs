@@ -222,14 +222,18 @@ impl ModuleResponseBuilder {
         self
     }
 
+    pub fn header(&mut self, name: String, value: String) -> &mut ModuleResponseBuilder {
+        let mut headers = self.headers.clone().expect("response headers must not be null");
+        headers.push(ResponseHeader { name, value });
+        self.headers = Some(headers);
+        self
+    }
+
     pub fn finish(&self) -> ModuleResponse {
         ModuleResponse {
             status: self.status.expect("response status code must not be null"),
             body: self.body.clone().expect("response body must not be null"),
-            headers: self
-                .headers
-                .clone()
-                .expect("response headers must no be null"),
+            headers: self.headers.clone().expect("response headers must not be null"),
         }
     }
 }
