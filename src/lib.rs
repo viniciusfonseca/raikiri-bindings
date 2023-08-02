@@ -62,8 +62,6 @@ macro_rules! init {
     };
 }
 
-use exports::*;
-
 #[allow(clippy::all)]
 pub mod imports {
     #[derive(Clone)]
@@ -195,45 +193,45 @@ pub mod exports {
     pub trait Exports {
         fn handler(params: String) -> ModuleResponse;
     }
-}
 
-pub struct ModuleResponseBuilder {
-    pub status: Option<u16>,
-    pub body: Option<String>,
-    pub headers: Option<Vec<exports::ResponseHeader>>,
-}
-
-impl ModuleResponseBuilder {
-    pub fn new() -> ModuleResponseBuilder {
-        ModuleResponseBuilder {
-            status: Some(200),
-            body: Some("".to_string()),
-            headers: Some(vec![]),
+    pub struct ModuleResponseBuilder {
+        pub status: Option<u16>,
+        pub body: Option<String>,
+        pub headers: Option<Vec<ResponseHeader>>,
+    }
+    
+    impl ModuleResponseBuilder {
+        pub fn new() -> ModuleResponseBuilder {
+            ModuleResponseBuilder {
+                status: Some(200),
+                body: Some("".to_string()),
+                headers: Some(vec![]),
+            }
         }
-    }
-
-    pub fn status(&mut self, status: u16) -> &mut ModuleResponseBuilder {
-        self.status = Some(status);
-        self
-    }
-
-    pub fn body(&mut self, body: String) -> &mut ModuleResponseBuilder {
-        self.body = Some(body);
-        self
-    }
-
-    pub fn header(&mut self, name: String, value: String) -> &mut ModuleResponseBuilder {
-        let mut headers = self.headers.clone().expect("response headers must not be null");
-        headers.push(ResponseHeader { name, value });
-        self.headers = Some(headers);
-        self
-    }
-
-    pub fn finish(&self) -> ModuleResponse {
-        ModuleResponse {
-            status: self.status.expect("response status code must not be null"),
-            body: self.body.clone().expect("response body must not be null"),
-            headers: self.headers.clone().expect("response headers must not be null"),
+    
+        pub fn status(&mut self, status: u16) -> &mut ModuleResponseBuilder {
+            self.status = Some(status);
+            self
+        }
+    
+        pub fn body(&mut self, body: String) -> &mut ModuleResponseBuilder {
+            self.body = Some(body);
+            self
+        }
+    
+        pub fn header(&mut self, name: String, value: String) -> &mut ModuleResponseBuilder {
+            let mut headers = self.headers.clone().expect("response headers must not be null");
+            headers.push(ResponseHeader { name, value });
+            self.headers = Some(headers);
+            self
+        }
+    
+        pub fn finish(&self) -> ModuleResponse {
+            ModuleResponse {
+                status: self.status.expect("response status code must not be null"),
+                body: self.body.clone().expect("response body must not be null"),
+                headers: self.headers.clone().expect("response headers must not be null"),
+            }
         }
     }
 }
