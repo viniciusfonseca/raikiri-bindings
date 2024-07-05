@@ -77,7 +77,7 @@ mod exports {
         fn handler(params:Vec<u8>,) -> ModuleResponse;
     
         }
-}const _: &str = include_str!(r#"/home/vinicius/projects/viniciusfonseca/raikiri-bindings/exports.wai"#);
+}
 #[allow(clippy::all)]
 mod imports {
     #[derive(Clone)]
@@ -141,7 +141,7 @@ mod imports {
     
     static mut IMPORTS_RET_AREA:RetArea = RetArea([0;
     20]);
-}const _: &str = include_str!(r#"/home/vinicius/projects/viniciusfonseca/raikiri-bindings/imports.wai"#);
+}
 
 struct Exports;
 impl exports::Exports for Exports {
